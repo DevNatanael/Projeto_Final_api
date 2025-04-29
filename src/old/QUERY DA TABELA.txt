@@ -1,0 +1,13 @@
+CREATE TABLE menu_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipo VARCHAR(20),
+    nome VARCHAR(255),
+    descricao TEXT,
+    valor DECIMAL(10,2),
+    valor_promocional DECIMAL(10,2),
+    tipo_complemento VARCHAR(50),
+    qtd_minima INT,
+    qtd_maxima INT
+);
+
+drive do mysql: npm install mysql2

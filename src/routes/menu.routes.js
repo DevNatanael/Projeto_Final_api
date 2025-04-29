@@ -1,0 +1,21 @@
+import { Router } from "express";
+import { MenuController } from "../controllers/menu.controller.js";
+import multer from "multer";
+import { authMiddleware } from "../middleware/auth.middleware.js";
+
+const router = Router();
+const upload = multer({ dest: "uploads/" });
+
+// Aplicando o middleware de autenticação em todas as rotas
+router.use(authMiddleware);
+
+router.post("/", MenuController.create);
+router.get("/", MenuController.getAll);
+router.get("/:id", MenuController.getById);
+router.put("/:id", MenuController.update);
+router.delete("/:id", MenuController.delete);
+
+// Rota para receber a imagem
+router.post("/upload", upload.single("image"), MenuController.uploadImage);
+
+export default router;
