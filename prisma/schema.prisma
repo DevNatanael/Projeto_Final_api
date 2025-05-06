@@ -17,11 +17,23 @@ model MenuItem {
   tipoComplemento  String?
   qtdMinima        Int?
   qtdMaxima        Int?
+  cardapio         Cardapio?  @relation(fields: [cardapioId], references: [id])
+  cardapioId       Int?
 }
 
 model User {
   id       Int    @id @default(autoincrement())
   email    String @unique
   password String
+}
+
+model Cardapio {
+  id          Int        @id @default(autoincrement())
+  nome        String
+  descricao   String?
+  ativo       Boolean    @default(true)
+  itens       MenuItem[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
