@@ -132,17 +132,26 @@ export const MenuController = {
       const responseData = await processImage(imagePath);
       const extractedData = JSON.parse(responseData);
 
-      for (const category of extractedData) {
-        for (const product of category.products) {
-          await MenuRepository.create({
+      for (const cardapioData of extractedData) {
+        // Cria o cardápio
+        const cardapio = await MenuRepository.createCardapio({
+          nome: cardapioData.title,
+          descricao: cardapioData.Description || "",
+          ativo: true
+        });
+
+        for (const category of cardapioData.products) {
+          // Cria os itens do menu
+          const menuItem = await MenuRepository.create({
             tipo: "Produto",
-            nome: product.product_name,
-            descricao: product.description || "",
-            valor: product.value || 0,
-            valorPromocional: product.promotion_value || 0,
+            nome: category.product_name,
+            descricao: category.description || "",
+            valor: category.value || 0,
+            valorPromocional: category.promotion_value || 0,
             tipoComplemento: "",
             qtdMinima: 0,
             qtdMaxima: 0,
+            cardapioId: cardapio.id, // Relaciona o item ao cardápio
           });
         }
       }
