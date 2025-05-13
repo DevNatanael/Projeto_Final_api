@@ -2,10 +2,10 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../config/database.js";
+import { stat } from "fs";
 
 export const AuthController = {
   async register(req, res) {
-    console.log(req.body);
     const { email, password } = req.body;
 
     try {
@@ -22,7 +22,8 @@ export const AuthController = {
         },
       });
 
-      res.status(201).json({ message: "Usuário registrado com sucesso", user });
+      res.status(201).json({ message: "Usuário registrado com sucesso", user, status: 201 });
+      console.log('deu certo');
     } catch (error) {
       res.status(500).json({ error: "Erro ao registrar usuário" });
       console.log(error);

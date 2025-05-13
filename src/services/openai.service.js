@@ -50,6 +50,8 @@ export async function processImage(imagePath) {
     - Opções: Todos os itens dentro dos complementos, cada um com descrição e valor.
 
     # Instruções para Resposta:
+    - Dê um título para o cardápio, como "Cardápio de Pizzas", "Cardápio de Açaís", de acordo com o conteúdo.
+    - Dê uma descrição para o cardápio, como "Cardápio de Pizzas", "Cardápio de Açaís", de acordo com o conteúdo.
     - Especificação: Sempre especifique na resposta o que cada item representa: categoria, produto, complemento, opção, descrição ou valor.
     - Valores: Se um valor não estiver explícito na imagem, considere-o como 0.
     - Formato de Resposta: Forneça a resposta sempre em formato JSON sem formatação.
@@ -60,7 +62,7 @@ export async function processImage(imagePath) {
     - Ordem e Estrutura: A ordem das informações deve seguir a estrutura natural do cardápio. Isso significa que os complementos e opções devem ser listados imediatamente após o produto ao qual pertencem.
 
     Exemplo de saída:
-    [{"category_name":"Pizzas","products":[{"product_name":"Pizzas 2 sabores","description":"Escolha 2 sabores","value":50,"promotion_value":45"complements":[{"complement_name":"Escolha o sabor", "complement_type":"Mais de uma opcao sem repetição","qtd_minima": "1", "maxima": "2" "options":[{"option_name":"Calabresa","value":0},{"option_name":"Mussarela","value":0},{"option_name":"Portuguesa","value":5}]}]}]}]
+    [{"title": "Cardapio de pizzas", "Description":"pizzas boas","category_name":"Pizzas","products":[{"product_name":"Pizzas 2 sabores","description":"Escolha 2 sabores","value":50,"promotion_value":45"complements":[{"complement_name":"Escolha o sabor", "complement_type":"Mais de uma opcao sem repetição","qtd_minima": "1", "maxima": "2" "options":[{"option_name":"Calabresa","value":0},{"option_name":"Mussarela","value":0},{"option_name":"Portuguesa","value":5}]}]}]}]
   `;
 
   const response = await openai.chat.completions.create({
@@ -75,3 +77,44 @@ export async function processImage(imagePath) {
 
   return response.choices[0].message.content;
 }
+
+
+/*
+const aaa = `[
+    {
+        "title": "Cardapio de pizzas",
+        "Description": "pizzas boas",
+        "category_name": "Pizzas",
+        "products": [
+            {
+                "product_name": "Pizzas 2 sabores",
+                "description": "Escolha 2 sabores",
+                "value": 50,
+                "promotion_value": 45,
+                "complements": [
+                    {
+                        "complement_name": "Escolha o sabor",
+                        "complement_type": "Mais de uma opcao sem repetição",
+                        "qtd_minima": "1",
+                        "maxima": "2",
+                        "options": [
+                            {
+                                "option_name": "Calabresa",
+                                "value": 0
+                            },
+                            {
+                                "option_name": "Mussarela",
+                                "value": 0
+                            },
+                            {
+                                "option_name": "Portuguesa",
+                                "value": 5
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]`;
+*/
