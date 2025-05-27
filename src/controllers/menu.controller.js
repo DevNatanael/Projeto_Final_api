@@ -130,24 +130,33 @@ export const MenuController = {
       console.log(`Imagem recebida: ${imagePath}`);
 
       const responseData = await processImage(imagePath);
-      const extractedData = JSON.parse(responseData);
+      let extractedData = JSON.parse(responseData);
 
-      for (const cardapioData of extractedData) {
-        // Cria o cardápio
+      console.log("Dados extraídos:", extractedData);
+
+      // Se a resposta possuir a propriedade "categorias", utilize-a; se não, encapsule em array
+      if (extractedData.categorias) {
+        extractedData = extractedData.categorias;
+      } else if (!Array.isArray(extractedData)) {
+        extractedData = [extractedData];
+      }
+
+      for (const categoria of extractedData) {
+        // Cria o cardápio usando a propriedade "nome" da categoria
         const cardapio = await MenuRepository.createCardapio({
-          nome: cardapioData.title,
-          descricao: cardapioData.Description || "",
-          ativo: true
+          nome: categoria.nome,
+          descricao: "", // ou, se houver outra propriedade, utilize-a
+          ativo: true,
         });
 
-        for (const category of cardapioData.products) {
-          // Cria os itens do menu
+        // Percorre os produtos da categoria
+        for (const produto of categoria.produtos) {
           const menuItem = await MenuRepository.create({
             tipo: "Produto",
-            nome: category.product_name,
-            descricao: category.description || "",
-            valor: category.value || 0,
-            valorPromocional: category.promotion_value || 0,
+            nome: produto.nome || produto.product_name, // ajuste conforme o retorno
+            descricao: produto.descricao || produto.description || "",
+            valor: produto.valor || produto.value || 0,
+            valorPromocional: produto.promotion_value || 0,
             tipoComplemento: "",
             qtdMinima: 0,
             qtdMaxima: 0,
