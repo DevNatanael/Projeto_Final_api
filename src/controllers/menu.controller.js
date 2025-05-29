@@ -134,28 +134,26 @@ export const MenuController = {
 
       console.log("Dados extraídos:", extractedData);
 
-      // Se a resposta possuir a propriedade "categorias", utilize-a; se não, encapsule em array
-      if (extractedData.categorias) {
-        extractedData = extractedData.categorias;
-      } else if (!Array.isArray(extractedData)) {
+      // Já no novo modelo, os dados devem ser um array de objetos com "category_name"
+      if (!Array.isArray(extractedData)) {
         extractedData = [extractedData];
       }
 
       for (const categoria of extractedData) {
-        // Cria o cardápio usando a propriedade "nome" da categoria
+        // Cria o cardápio usando a propriedade "category_name"
         const cardapio = await MenuRepository.createCardapio({
-          nome: categoria.nome,
-          descricao: "", // ou, se houver outra propriedade, utilize-a
+          nome: categoria.category_name,
+          descricao: "", // Se houver outra propriedade para descrição, ajuste aqui
           ativo: true,
         });
 
         // Percorre os produtos da categoria
-        for (const produto of categoria.produtos) {
+        for (const produto of categoria.products) {
           const menuItem = await MenuRepository.create({
             tipo: "Produto",
-            nome: produto.nome || produto.product_name, // ajuste conforme o retorno
-            descricao: produto.descricao || produto.description || "",
-            valor: produto.valor || produto.value || 0,
+            nome: produto.product_name,
+            descricao: produto.description || "",
+            valor: produto.value || 0,
             valorPromocional: produto.promotion_value || 0,
             tipoComplemento: "",
             qtdMinima: 0,
