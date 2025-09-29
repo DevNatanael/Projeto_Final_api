@@ -23,7 +23,6 @@ export const AuthController = {
       });
 
       res.status(201).json({ message: "Usuário registrado com sucesso", user, status: 201 });
-      console.log('deu certo');
     } catch (error) {
       res.status(500).json({ error: "Erro ao registrar usuário" });
       console.log(error);
