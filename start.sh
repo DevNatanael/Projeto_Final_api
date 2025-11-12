@@ -7,17 +7,6 @@ set -e  # Para o script se algum comando falhar
 
 echo "🚀 Iniciando configuração do projeto..."
 
-# Verifica se o arquivo .env existe
-if [ ! -f .env ]; then
-    echo "⚠️  Arquivo .env não encontrado!"
-    echo "📝 Por favor, crie um arquivo .env com as seguintes variáveis:"
-    echo "   DATABASE_URL=\"postgresql://usuario:senha@localhost:5432/projeto_final?schema=public\""
-    echo "   JWT_SECRET=\"seu_jwt_secret_aqui\""
-    exit 1
-fi
-
-echo "✅ Arquivo .env encontrado"
-
 # Instala as dependências do npm
 echo ""
 echo "📦 Instalando dependências do npm..."
